@@ -6,7 +6,7 @@ Mimimix is Elixir code reloader. It watches the files in Elixir and Erlang direc
 ### Installation
 
 1. Create a new application:
-  mix new my_app
+  <pre>mix new my_app</pre>
 
 2. Add to deps:
   ```elixir
