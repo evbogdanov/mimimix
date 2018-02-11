@@ -3,9 +3,9 @@ defmodule Mimimix.Mixfile do
 
   def project do
     [app: :mimimix,
-     version: "0.0.1",
+     version: "0.0.2",
      elixir: "~> 1.0",
-     deps: deps]
+     deps: deps()]
   end
 
   def application do
