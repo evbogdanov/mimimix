@@ -18,11 +18,12 @@ defmodule Mimimix do
 
     def start_link do
       Process.send_after(__MODULE__, :poll_and_reload, 10000)
-      GenServer.start_link(__MODULE__, %State{}, name: Mimimix.Worker)
+      GenServer.start_link(__MODULE__, %State{last_mtime: nil}, name: Mimimix.Worker)
     end
 
     def handle_info(:poll_and_reload, state) do
       {dir, current_mtime} = get_mtime()
+
       state = if state.last_mtime != current_mtime do
         if dir == src() do
           IO.puts "Compiling Erlang..."
@@ -34,6 +35,7 @@ defmodule Mimimix do
         end
         %State{last_mtime: current_mtime}
       end
+
       Process.send_after(__MODULE__, :poll_and_reload, 1000)
       {:noreply, state}
     end
