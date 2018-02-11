@@ -11,7 +11,7 @@ Mimimix is Elixir code reloader. It watches the files in Elixir and Erlang direc
 2. Add to deps:
   ```elixir
   defp deps do
-    [{:mimimix, github: "evbogdanov/mimimix", only: :dev}]
+    [{:mimimix, github: "SeedyROM/mimimix", only: :dev}]
   end
   ```
 
