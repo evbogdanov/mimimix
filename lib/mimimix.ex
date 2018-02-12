@@ -22,18 +22,19 @@ defmodule Mimimix do
     end
 
     def handle_info(:poll_and_reload, state) do
-      {dir, current_mtime} = get_mtime
-      if state.last_mtime != current_mtime do
-        state = %State{last_mtime: current_mtime}
-        if dir == src do
+      {dir, current_mtime} = get_mtime()
+      state = if state != nil and state.last_mtime != current_mtime do
+        if dir == src() do
           IO.puts "Compiling Erlang..."
           Mix.Tasks.Compile.Erlang.run([]) # not enough
-          scan(src) # extra work to do
+          scan(src()) # extra work to do
         else
           IO.puts "Compiling Elixir..."
           Mix.Tasks.Compile.Elixir.run(["--ignore-module-conflict"])
         end
+        %State{last_mtime: current_mtime}
       end
+
       Process.send_after(__MODULE__, :poll_and_reload, 1000)
       {:noreply, state}
     end
@@ -42,12 +43,12 @@ defmodule Mimimix do
     get the latest modification time
     """
     def get_mtime do
-      mtime_lib = get_mtime lib
-      mtime_src = get_mtime src
+      mtime_lib = get_mtime lib()
+      mtime_src = get_mtime src()
       if mtime_lib > mtime_src do
-        {lib, mtime_lib}
+        {lib(), mtime_lib}
       else
-        {src, mtime_src}
+        {src(), mtime_src}
       end
     end
 
